@@ -3,8 +3,8 @@ import QuickModifyVariables
 import Map
 import Sprite
 
-
-
+#Test main
+print(' main test')
 def main():
     pygame.init()
     clock = pygame.time.Clock()
