@@ -1,6 +1,6 @@
 
 
-class Sprite:
+class AI:
     def __init__(self,
                  xStartInPixels:int = 0,
                  yStartInPixels:int = 0,
@@ -49,7 +49,6 @@ class Sprite:
 
         }
 
-    
     def update(self,updateOptions:dict = {}):
         if not self.latchMove:
             self.currentDirection = 'n'
@@ -57,8 +56,6 @@ class Sprite:
         for i in updateOptions:
             self.updateOptions[updateOptions[i]]()
         
-
-
     def moveRight(self):
         self.currentDirection = 'right'
         self.orientation = 'r'
@@ -100,8 +97,6 @@ class Sprite:
         if self.availableDirections == 8:
             self.y+=1
     
-
-
     def nothing(self):
         pass
 
@@ -110,7 +105,6 @@ class Sprite:
 
     def addLife(self):
         self.lives+=1
-        
 
     def reset(self):
         self.x = self.xHome
@@ -118,3 +112,69 @@ class Sprite:
         self.currentDirection = 'n'
         self.orientation = 'u'
         
+
+    def determine_direction(self,
+                            map,
+                            playerX,
+                            playerY,
+                            rightBlocked: bool = False,
+                            leftBlocked: bool = False,
+                            upBlocked: bool = False,
+                            downBlocked: bool = False):
+        '''
+        Map is a 2D list of either 0's or 1's of arbitrary size
+        playerLocation is tuple containing (playerRow,playerColumn)
+        '''
+        finalDecision = ''
+        directionTowardsPlayer = ''
+
+        dx = self.x-playerX
+        dy = self.y-playerY
+
+
+        if abs(dx) >= abs(dy):
+            if dx < 0:
+                directionTowardsPlayer = 'right'
+                print('right')
+            elif dx > 0:
+                directionTowardsPlayer = 'left'
+                print('left')
+        elif abs(dx) < abs(dy):
+            if dy < 0:
+                directionTowardsPlayer = 'down'
+                print('down')
+            elif dy > 0:
+                directionTowardsPlayer = 'up'
+                print('up')
+
+
+        '''
+        while finalDecision == '':
+            
+            
+            if directionTowardsPlayer == 'right' and not rightBlocked:
+                if map[self.y][self.x+1] == (0,0,0,0):
+                    finalDecision = 'right'
+                else:
+                    rightBlocked = True
+            elif directionTowardsPlayer == 'left' and not leftBlocked:
+                if map[self.y][self.x-1] == (0,0,0,0):
+                    finalDecision = 'left'
+                else:
+                    leftBlocked = True
+            elif directionTowardsPlayer == 'up' and not upBlocked:
+                if map[self.y-1][self.x] == (0,0,0,0):
+                    finalDecision = 'up'
+                else:
+                    upBlocked = True
+            elif directionTowardsPlayer == 'down' and not downBlocked:
+                if map[self.y+1][self.x] == (0,0,0,0):
+                    finalDecision = 'down'
+                else:
+                    downBlocked = True
+        '''
+
+            
+
+        #print('direction=',directionTowardsPlayer)
+        return finalDecision

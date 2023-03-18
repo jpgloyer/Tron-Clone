@@ -2,15 +2,42 @@ import pygame
 import QuickModifyVariables
 import Map
 import Sprite
+import AI
 
 
 def main():
     pygame.init()
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((QuickModifyVariables.screenSizeX,QuickModifyVariables.screenSizeY))
-    map = Map.Map(QuickModifyVariables.screenSizeX,QuickModifyVariables.screenSizeY)
-    Character = Sprite.Sprite(QuickModifyVariables.playerSpawnX,QuickModifyVariables.playerSpawnY,'r',5,15,latchMove=True,availableDirections=4,speed=2,lives=3,primaryColor=(0,0,255,0),secondaryColor=(0,122,122,0))
+    screen = pygame.display.set_mode((QuickModifyVariables.screenSizeX,
+                                      QuickModifyVariables.screenSizeY))
     
+    map = Map.Map(xSizeInPixels=QuickModifyVariables.screenSizeX,
+                  ySizeInPixels=QuickModifyVariables.screenSizeY)
+    
+    Character = Sprite.Sprite(xStartInPixels=QuickModifyVariables.playerSpawnX,
+                              yStartInPixels=QuickModifyVariables.playerSpawnY,
+                              shape=QuickModifyVariables.playerShape,
+                              width=QuickModifyVariables.playerWidth,
+                              height=QuickModifyVariables.playerHeight,
+                              latchMove=QuickModifyVariables.playerLatchMove,
+                              availableDirections=QuickModifyVariables.playerAvailableDirections,
+                              speed=QuickModifyVariables.playerSpeed,
+                              lives=QuickModifyVariables.playerStartingLives,
+                              primaryColor=QuickModifyVariables.playerPrimaryColor,
+                              secondaryColor=QuickModifyVariables.playerSecondaryColor)
+    
+    AI1 = AI.AI(xStartInPixels=0,
+                yStartInPixels=0,
+                shape='r',
+                width=15,
+                height=5,
+                radius=0,
+                availableDirections=4,
+                latchMove=False,
+                speed=2,
+                lives=1,
+                primaryColor=(255,255,255,0),
+                secondaryColor=(255,255,255,0))
 
 
     
@@ -59,6 +86,8 @@ def main():
             pygame.draw.rect(screen, Character.primaryColor,(int(Character.x-(Character.width/2)),int(Character.y-(Character.height/2)),Character.width,Character.height))
         elif Character.orientation == 'r' or Character.orientation == 'l':
             pygame.draw.rect(screen, Character.primaryColor,(int(Character.x-(Character.height/2)),int(Character.y-(Character.width/2)),Character.height,Character.width))
+        
+        screen.set_at((AI1.x,AI1.y),AI1.primaryColor)
         '''
         End draw map and characters
         '''
@@ -156,6 +185,23 @@ def main():
                 map.set_pixel_value(int(Character.y), int(Character.x), Character.secondaryColor)
         '''
         End player-controller character functions
+        '''
+
+
+        '''
+        AI functions
+        '''
+        for i in range(AI1.speed):
+            AI1updateOptions = {
+                'direction':'n'
+            }
+            AI1updateOptions['direction'] = AI1.determine_direction(map.map,Character.x,Character.y)
+            AI1.update(AI1updateOptions)
+
+
+
+        '''
+        End AI functions
         '''
 
 

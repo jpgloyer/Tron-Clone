@@ -1,7 +1,9 @@
 
 
 class Map:
-    def __init__(self, xSizeInPixels, ySizeInPixels):
+    def __init__(self, 
+                 xSizeInPixels: int = 50, 
+                 ySizeInPixels: int = 50):
         # self.xSize_inGridCells = int(xSize_inPixels/5)
         # self.ySize_inGridCells = int(ySize_inPixels/5)
 
